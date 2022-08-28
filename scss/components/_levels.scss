@@ -1,0 +1,22 @@
+.levels {
+	flex-basis: 25%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+
+		// .levels__item
+
+		&__item {
+			margin-bottom: 20px;
+		}
+}
+.level {
+	padding: 10px;
+	border: 1px solid #fff;
+	cursor: pointer;
+}
+
+.level-active{
+	box-shadow: 5px 5px 50px rgba(255,255,255,0.8)
+}

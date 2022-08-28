@@ -4,14 +4,15 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/style.css">
 	<title>Древний Ужас</title>
 </head>
 <body>
 	<section class="section ancients">
-		<div class="ancients__item ancient"><img src="" alt="ancient"></div>
-		<div class="ancients__item ancient"><img src="" alt="ancient"></div>
-		<div class="ancients__item ancient"><img src="" alt="ancient"></div>
-		<div class="ancients__item ancient"><img src="" alt="ancient"></div>
+		<div class="ancients__item ancient" id="azathoth"><img src="assets/Ancients/Azathoth.png" alt="ancient" class="ancients__img"></div>
+		<div class="ancients__item ancient" id="cthulhu"><img src="assets/Ancients/Cthulthu.png" alt="ancient" class="ancients__img"></div>
+		<div class="ancients__item ancient" id="iogSothoth"><img src="assets/Ancients/IogSothoth.png" alt="ancient" class="ancients__img"></div>
+		<div class="ancients__item ancient" id="shubNiggurath"><img src="assets/Ancients/ShubNiggurath.png" alt="ancient" class="ancients__img"></div>
 	</section>
 	<section class="section levels">
 		<div class="levels__item level">Очень легкий уровень</div>
@@ -24,32 +25,35 @@
 		<div class="cards__state state">
 			<div class="state__item">
 				<div class="state__title">Первая стадия</div>
-				<div class="state__wrapper">
-					<div class="state__counter"></div>
-					<div class="state__counter"></div>
-					<div class="state__counter"></div>
+				<div class="state__wrapper state-wrapper" id="firstStage">
+					<div class="state__counter counter counter_green">0</div>
+					<div class="state__counter counter counter_yellow">0</div>
+					<div class="state__counter counter counter_blue">0</div>
 				</div>
 			</div>
 			<div class="state__item">
 				<div class="state__title">Вторая стадия</div>
-				<div class="state__wrapper">
-					<div class="state__counter"></div>
-					<div class="state__counter"></div>
-					<div class="state__counter"></div>
+				<div class="state__wrapper state-wrapper" id="secondStage">
+					<div class="state__counter counter counter_green">0</div>
+					<div class="state__counter counter counter_yellow">0</div>
+					<div class="state__counter counter counter_blue">0</div>
 				</div>
 			</div>
 			<div class="state__item">
 				<div class="state__title">Третья стадия</div>
-				<div class="state__wrapper">
-					<div class="state__counter"></div>
-					<div class="state__counter"></div>
-					<div class="state__counter"></div>
+				<div class="state__wrapper state-wrapper" id="thirdStage">
+					<div class="state__counter counter counter_green">0</div>
+					<div class="state__counter counter counter_yellow">0</div>
+					<div class="state__counter counter counter_blue">0</div>
 				</div>
 			</div>
 		</div>
-		<div class="cards__mix">Мешать карту</div>
-		<div class="cards__choose-btn"></div>
-		<div class="cards__choose-card"></div>
+		<div class="cards__mix none">Новая карта</div>
+		<div class="cards__wrapper none">
+			<div class="cards__choose-btn"><img src="assets/mythicCardBackground.png" alt=""></div>
+			<div class="cards__choose-card"><img src="assets/mythicCardBackground.png" alt="" class="cards__choose-card-img"></div>
+		</div>
 	</section>
+	<script type="module" src="index.js"></script>
 </body>
 </html>

@@ -1,0 +1,20 @@
+.section {
+}
+.ancients {
+
+		// .ancients__item
+
+		&__item {
+			cursor: pointer;
+			margin-bottom: 50px;
+		}
+
+		// .ancients__img
+
+		&__img {
+		}
+}
+
+.ancient-active{
+	box-shadow: 10px 10px 50px rgba(255,255,255,0.8)
+}

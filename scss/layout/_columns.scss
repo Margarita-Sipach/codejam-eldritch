@@ -1,0 +1,16 @@
+.ancients {
+
+	@include columns($width: 45%);
+
+		// .ancients__img
+
+		&__img {
+			max-width: 100%;
+		}
+}
+
+.cards{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}

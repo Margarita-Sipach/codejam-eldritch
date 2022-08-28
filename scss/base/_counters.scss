@@ -1,0 +1,26 @@
+.counter{
+	display: inline-block;
+	// border: 1px solid #fff;
+	// border-radius: 100%;
+	padding: 10px;
+	font-size: 20px;
+
+	// .counter_green
+
+	&_green {
+		color: green;
+	}
+
+	// .counter_yellow
+
+	&_yellow {
+		color: yellow;
+	}
+
+	// .counter_blue
+
+	&_blue {
+		color: blue;
+	}
+}
+
