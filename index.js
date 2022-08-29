@@ -29,6 +29,10 @@ let ancientChoosenCard,
 	allBrownCardsWithLevel = [],
 	allBlueCardsWithLevel = [];
 
+	let allBlueNormalCards = [],
+		allGreenNormalCards = [],
+		allBrownNormalCards = [];
+
 	let newStages = [];
 
 	let currentColorNumber,
@@ -90,7 +94,9 @@ const chooseLevel = (e) => {
 	level.classList.add('level-active');
 	CARD_MIX_BTN.classList.remove('none');
 
-	for(let item of difficulties){
+	if(level.id === 'very_easy'){
+		veryEasyHardLevel('easy');
+	}
 		if(level.id === 'easy'){
 			easyNormalHardLevel('hard');
 		}
@@ -100,12 +106,139 @@ const chooseLevel = (e) => {
 		if(level.id === 'hard'){
 			easyNormalHardLevel('easy');
 		}
-	}
+		if(level.id === 'very_hard'){
+			veryEasyHardLevel('hard');
+		}
 
 	CARDS_WRAPPER.classList.remove('none');
-	
 	CARD_MIX_BTN.addEventListener('click', chooseCard)
 }
+
+
+const veryEasyHardLevel = (levelName) => {
+
+	normalCards();
+
+	stages.forEach((item, index) => {
+		
+		counts[index][0] = STATE_WRAPPERS[index].children[0].textContent;
+		counts[index][1] = STATE_WRAPPERS[index].children[1].textContent;
+		counts[index][2] = STATE_WRAPPERS[index].children[2].textContent;
+	});
+
+	let randomNumber;
+	let blueCount = 0,
+		 greenCount = 0,
+		 brownCount = 0;
+
+	for(let item of blueCardsData){
+		if(item.difficulty === levelName){
+			allBlueCardsWithLevel.push(item.id);
+		}
+	}
+
+	for(let item of greenCardsData){
+		if(item.difficulty === levelName){
+			allGreenCardsWithLevel.push(item.id);
+		}
+	}
+
+	for(let item of brownCardsData){
+		if(item.difficulty === levelName){
+			allBrownCardsWithLevel.push(item.id);
+		}
+	}
+
+	// console.log(allGreenCardsWithLevel);
+	console.log(allBlueNormalCards);
+	// console.log(+counts[0][0] + +counts[1][0] + +counts[2][0]);
+
+	blueCount = +counts[0][0] + +counts[1][0] + +counts[2][0];
+	greenCount = +counts[0][1] + +counts[1][1] + +counts[2][1];
+	brownCount = +counts[0][2] + +counts[1][2] + +counts[2][2];
+
+	// console.log(greenCount);
+	// console.log(allBlueNormalCards[allBlueNormalCards.length - 1]);
+	// console.log(allGreenNormalCards);
+	// console.log(allBrownNormalCards);
+
+	while(allBlueCardsWithLevel.length < blueCount){
+			allBlueCardsWithLevel.push(allBlueNormalCards[allBlueNormalCards.length - 1]);
+			allBlueNormalCards.pop();
+	}
+
+	console.log(allBlueCardsWithLevel);
+
+	while(allGreenCardsWithLevel.length < greenCount){
+		allGreenCardsWithLevel.push(allGreenNormalCards[allGreenNormalCards.length - 1]);
+		allGreenNormalCards.pop();
+	}
+
+	while(allBrownCardsWithLevel.length < brownCount){
+		allBrownCardsWithLevel.push(allGreenNormalCards[allBrownNormalCards.length - 1]);
+		allBrownNormalCards.pop();
+	}
+
+	// console.log(allBlueCardsWithLevel);
+
+	// while(allGreenCardsWithLevel.length <= +counts[0][1] + +counts[1][1] + +counts[2][1]){
+	// 	for(let item of greenCardsData){
+	// 		if(item.difficulty === 'normal')
+	// 		allGreenCardsWithLevel.push(item.id);
+	// 	}
+	// }
+
+	// while(allBrownCardsWithLevel.length <= +counts[0][2] + +counts[1][2] + +counts[2][2]){
+	// 	for(let item of brownCardsData){
+	// 		if(item.difficulty === 'normal')
+	// 		allBrownCardsWithLevel.push(item.id);
+	// 	}
+	// }
+
+	allBlueCardsWithLevel = shuffleArray(allBlueCardsWithLevel);
+
+
+	stages.forEach((item, index) => {
+		
+		// counts[index][0] = STATE_WRAPPERS[index].children[0].textContent;
+		// counts[index][1] = STATE_WRAPPERS[index].children[1].textContent;
+		// counts[index][2] = STATE_WRAPPERS[index].children[2].textContent;
+
+		
+
+		blueCount = 0;
+		greenCount = 0;
+		brownCount = 0;
+
+		while(blueCount < counts[index][0]){
+			// randomNumber = getRandomNum(0, allBlueCardsWithLevel.length)
+			// if(!item.includes(`assets/MythicCards/blue/${allBlueCardsWithLevel[randomNumber]}.png`)){
+				// console.log(allBlueCardsWithLevel[allBlueCardsWithLevel.length]);
+				item.push(`assets/MythicCards/blue/${allBlueCardsWithLevel[allBlueCardsWithLevel.length - 1]}.png`);
+				allBlueCardsWithLevel.pop();
+				blueCount++;
+			// }
+		}
+
+		while(greenCount < counts[index][1]){
+			item.push(`assets/MythicCards/green/${allGreenCardsWithLevel[allGreenCardsWithLevel.length - 1]}.png`);
+				allGreenCardsWithLevel.pop();
+				greenCount++;
+		}
+
+		while(brownCount < counts[index][2]){
+			item.push(`assets/MythicCards/brown/${allBrownCardsWithLevel[allBrownCardsWithLevel.length - 1]}.png`);
+				allBrownCardsWithLevel.pop();
+				brownCount++;
+		}
+
+		newStages.push(item);
+	})
+
+	console.log(newStages)
+}
+
+
 
 
 const easyNormalHardLevel = (levelName) => {
@@ -168,8 +301,26 @@ const easyNormalHardLevel = (levelName) => {
 	})
 }
 
+const normalCards = () => {
+	for(let item of blueCardsData){
+		if(item.difficulty === 'normal')
+		allBlueNormalCards.push(item.id);
+	}
 
+	for(let item of greenCardsData){
+		if(item.difficulty === 'normal')
+		allGreenNormalCards.push(item.id);
+	}
 
+	for(let item of brownCardsData){
+		if(item.difficulty === 'normal')
+		allBrownNormalCards.push(item.id);
+	}
+
+	allBlueNormalCards = shuffleArray(allBlueNormalCards);
+	allGreenNormalCards = shuffleArray(allGreenNormalCards);
+	allBrownNormalCards = shuffleArray(allBrownNormalCards);
+}
 
 const chooseCard = () => {
 
