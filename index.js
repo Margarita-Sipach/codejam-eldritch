@@ -48,6 +48,10 @@ let ancientChoosenCard,
 	let stages = [[], [], []]; 
 
 const chooseAncientCard = (e) => {
+	// location.reload();
+
+	// LEVELS.forEach(item =>item.classList.remove('level-active'));
+
 	newStages = []
 
 	const ancient = e.target;
@@ -317,3 +321,4 @@ const shuffleArray = (array) => {
 }
 
 ANCIENTS.forEach(item => item.addEventListener('click', e => chooseAncientCard(e)));
+console.log('Все должно работать корректно при перезагрузке, извините за неудобства')
