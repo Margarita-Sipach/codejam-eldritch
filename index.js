@@ -119,12 +119,7 @@ const veryEasyHardLevel = (levelName) => {
 
 	normalCards();
 
-	stages.forEach((item, index) => {
-		
-		counts[index][0] = STATE_WRAPPERS[index].children[0].textContent;
-		counts[index][1] = STATE_WRAPPERS[index].children[1].textContent;
-		counts[index][2] = STATE_WRAPPERS[index].children[2].textContent;
-	});
+	fillCounts();
 
 	let randomNumber;
 	let blueCount = 0,
@@ -149,18 +144,9 @@ const veryEasyHardLevel = (levelName) => {
 		}
 	}
 
-	// console.log(allGreenCardsWithLevel);
-	console.log(allBlueNormalCards);
-	// console.log(+counts[0][0] + +counts[1][0] + +counts[2][0]);
-
 	blueCount = +counts[0][0] + +counts[1][0] + +counts[2][0];
 	greenCount = +counts[0][1] + +counts[1][1] + +counts[2][1];
 	brownCount = +counts[0][2] + +counts[1][2] + +counts[2][2];
-
-	// console.log(greenCount);
-	// console.log(allBlueNormalCards[allBlueNormalCards.length - 1]);
-	// console.log(allGreenNormalCards);
-	// console.log(allBrownNormalCards);
 
 	while(allBlueCardsWithLevel.length < blueCount){
 			allBlueCardsWithLevel.push(allBlueNormalCards[allBlueNormalCards.length - 1]);
@@ -179,74 +165,16 @@ const veryEasyHardLevel = (levelName) => {
 		allBrownNormalCards.pop();
 	}
 
-	// console.log(allBlueCardsWithLevel);
+	fillAllCardsWithLevels();
 
-	// while(allGreenCardsWithLevel.length <= +counts[0][1] + +counts[1][1] + +counts[2][1]){
-	// 	for(let item of greenCardsData){
-	// 		if(item.difficulty === 'normal')
-	// 		allGreenCardsWithLevel.push(item.id);
-	// 	}
-	// }
-
-	// while(allBrownCardsWithLevel.length <= +counts[0][2] + +counts[1][2] + +counts[2][2]){
-	// 	for(let item of brownCardsData){
-	// 		if(item.difficulty === 'normal')
-	// 		allBrownCardsWithLevel.push(item.id);
-	// 	}
-	// }
-
-	allBlueCardsWithLevel = shuffleArray(allBlueCardsWithLevel);
-
-
-	stages.forEach((item, index) => {
-		
-		// counts[index][0] = STATE_WRAPPERS[index].children[0].textContent;
-		// counts[index][1] = STATE_WRAPPERS[index].children[1].textContent;
-		// counts[index][2] = STATE_WRAPPERS[index].children[2].textContent;
-
-		
-
-		blueCount = 0;
-		greenCount = 0;
-		brownCount = 0;
-
-		while(blueCount < counts[index][0]){
-			// randomNumber = getRandomNum(0, allBlueCardsWithLevel.length)
-			// if(!item.includes(`assets/MythicCards/blue/${allBlueCardsWithLevel[randomNumber]}.png`)){
-				// console.log(allBlueCardsWithLevel[allBlueCardsWithLevel.length]);
-				item.push(`assets/MythicCards/blue/${allBlueCardsWithLevel[allBlueCardsWithLevel.length - 1]}.png`);
-				allBlueCardsWithLevel.pop();
-				blueCount++;
-			// }
-		}
-
-		while(greenCount < counts[index][1]){
-			item.push(`assets/MythicCards/green/${allGreenCardsWithLevel[allGreenCardsWithLevel.length - 1]}.png`);
-				allGreenCardsWithLevel.pop();
-				greenCount++;
-		}
-
-		while(brownCount < counts[index][2]){
-			item.push(`assets/MythicCards/brown/${allBrownCardsWithLevel[allBrownCardsWithLevel.length - 1]}.png`);
-				allBrownCardsWithLevel.pop();
-				brownCount++;
-		}
-
-		newStages.push(item);
-	})
-
-	console.log(newStages)
 }
-
-
 
 
 const easyNormalHardLevel = (levelName) => {
 
-	let randomNumber;
-	let blueCount = 0,
-		 greenCount = 0,
-		 brownCount = 0;
+	fillCounts();
+
+		
 
 	for(let item of blueCardsData){
 		if(item.difficulty !== levelName)
@@ -263,41 +191,53 @@ const easyNormalHardLevel = (levelName) => {
 		allBrownCardsWithLevel.push(item.id);
 	}
 
+	fillAllCardsWithLevels();
+}
+
+const fillCounts = () => {
 	stages.forEach((item, index) => {
 		
 		counts[index][0] = STATE_WRAPPERS[index].children[0].textContent;
 		counts[index][1] = STATE_WRAPPERS[index].children[1].textContent;
 		counts[index][2] = STATE_WRAPPERS[index].children[2].textContent;
+	});
+}
 
+const fillAllCardsWithLevels = () => {
+
+	allBlueCardsWithLevel = shuffleArray(allBlueCardsWithLevel);
+	allGreenCardsWithLevel = shuffleArray(allGreenCardsWithLevel);
+	allBrownCardsWithLevel = shuffleArray(allBrownCardsWithLevel);
+
+	let blueCount = 0,
+		 greenCount = 0,
+		 brownCount = 0;
+
+	stages.forEach((item, index) => {
+		
 		blueCount = 0;
 		greenCount = 0;
 		brownCount = 0;
 
 		while(blueCount < counts[index][0]){
-			randomNumber = getRandomNum(0, allBlueCardsWithLevel.length)
-			if(!item.includes(`assets/MythicCards/blue/${allBlueCardsWithLevel[randomNumber]}.png`)){
-				item.push(`assets/MythicCards/blue/${allBlueCardsWithLevel[randomNumber]}.png`);
+				item.push(`assets/MythicCards/blue/${allBlueCardsWithLevel[allBlueCardsWithLevel.length - 1]}.png`);
+				allBlueCardsWithLevel.pop();
 				blueCount++;
-			}
 		}
 
 		while(greenCount < counts[index][1]){
-			randomNumber = getRandomNum(0, allGreenCardsWithLevel.length)
-			if(!item.includes(`assets/MythicCards/green/${allGreenCardsWithLevel[randomNumber]}.png`)){
-				item.push(`assets/MythicCards/green/${allGreenCardsWithLevel[randomNumber]}.png`);
+			item.push(`assets/MythicCards/green/${allGreenCardsWithLevel[allGreenCardsWithLevel.length - 1]}.png`);
+				allGreenCardsWithLevel.pop();
 				greenCount++;
-			}
 		}
 
 		while(brownCount < counts[index][2]){
-			randomNumber = getRandomNum(0, allBrownCardsWithLevel.length);
-			if(!item.includes(`assets/MythicCards/brown/${allBrownCardsWithLevel[randomNumber]}.png`)){
-				item.push(`assets/MythicCards/brown/${allBrownCardsWithLevel[randomNumber]}.png`);
+			item.push(`assets/MythicCards/brown/${allBrownCardsWithLevel[allBrownCardsWithLevel.length - 1]}.png`);
+				allBrownCardsWithLevel.pop();
 				brownCount++;
-			}
 		}
 
-		newStages.push(shuffleArray(item));
+		newStages.push(item);
 	})
 }
 
@@ -323,6 +263,11 @@ const normalCards = () => {
 }
 
 const chooseCard = () => {
+
+	newStages[0] = shuffleArray(newStages[0]);
+	newStages[1] = shuffleArray(newStages[1]);
+	newStages[2] = shuffleArray(newStages[2]);
+	
 
 	let currentCard;
 	
