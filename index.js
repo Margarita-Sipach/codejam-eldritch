@@ -84,7 +84,7 @@ const showCardsCount = () => {
 
 const chooseLevel = (e) => {
 	newStages = []
-	
+
 	const level = e.target;
 	LEVELS.forEach(item =>item.classList.remove('level-active'));
 	level.classList.add('level-active');
@@ -132,30 +132,31 @@ const normalLevel = () => {
 		greenCount = 0,
 		brownCount = 0;
 
-		item = new Set();
-
 		while(blueCount < counts[index][0]){
 			randomNumber = getRandomNum(0, allBlueCardsWithLevel.length)
-			item.add(`assets/MythicCards/blue/${allBlueCardsWithLevel[randomNumber]}.png`);
-			blueCount++;
-			// console.log(blueCount);
+			if(!item.includes(`assets/MythicCards/blue/${allBlueCardsWithLevel[randomNumber]}.png`)){
+				item.push(`assets/MythicCards/blue/${allBlueCardsWithLevel[randomNumber]}.png`);
+				blueCount++;
+			}
 		}
 
 		while(greenCount < counts[index][1]){
 			randomNumber = getRandomNum(0, allGreenCardsWithLevel.length)
-			item.add(`assets/MythicCards/green/${allGreenCardsWithLevel[randomNumber]}.png`);
-			greenCount++;
-			// console.log(greenCount);
+			if(!item.includes(`assets/MythicCards/green/${allGreenCardsWithLevel[randomNumber]}.png`)){
+				item.push(`assets/MythicCards/green/${allGreenCardsWithLevel[randomNumber]}.png`);
+				greenCount++;
+			}
 		}
 
 		while(brownCount < counts[index][2]){
-			randomNumber = getRandomNum(0, allBrownCardsWithLevel.length)
-			item.add(`assets/MythicCards/brown/${allBrownCardsWithLevel[randomNumber]}.png`);
+			randomNumber = getRandomNum(0, allBrownCardsWithLevel.length);
+			if(!item.includes(`assets/MythicCards/brown/${allBrownCardsWithLevel[randomNumber]}.png`)){
+				item.push(`assets/MythicCards/brown/${allBrownCardsWithLevel[randomNumber]}.png`);
 			brownCount++;
-			// console.log(newStages);
+			}
 		}
 
-		newStages.push(shuffleArray(Array.from(item)));
+		newStages.push(shuffleArray(item));
 	})
 
 	console.log(newStages);
