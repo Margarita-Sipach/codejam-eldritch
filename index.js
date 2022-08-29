@@ -20,7 +20,8 @@ const ANCIENTS = document.querySelectorAll('.ancient'),
 		
 const COLORS = ['blue', 'green', 'brown'];
 
-let COUNTS = [0, 0, 0]
+let counts = [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+		state = 0;
 
 let ancientChoosenCard,
 	allCardsWithLevel = [],
@@ -32,10 +33,15 @@ let ancientChoosenCard,
 
 	let currentColorNumber,
 	currentCardNumber;
+
+	let 	greenCards,
+			brownCards,
+			blueCards;
 			// greenCount = 0,
 			// brownCount = 0,
 			// blueCount = 0;
 
+	let stages = [[], [], []]; 
 
 const chooseAncientCard = (e) => {
 	const ancient = e.target;
@@ -60,9 +66,6 @@ const showCardsCount = () => {
 			STATE_WRAPPERS[0].children[0].textContent = ancientChoosenCard.firstStage.greenCards;
 			STATE_WRAPPERS[0].children[1].textContent = ancientChoosenCard.firstStage.brownCards;
 			STATE_WRAPPERS[0].children[2].textContent = ancientChoosenCard.firstStage.blueCards;
-			// COUNTS[0] = STATE_WRAPPERS[0].children[0].textContent;
-			// COUNTS[1] = STATE_WRAPPERS[1].children[0].textContent;
-			// COUNTS[2] = STATE_WRAPPERS[2].children[0].textContent;
 		}
 		if(key === 'secondStage'){
 			STATE_WRAPPERS[1].children[0].textContent = ancientChoosenCard.secondStage.greenCards;
@@ -90,47 +93,288 @@ const chooseLevel = (e) => {
 	}
 
 	CARDS_WRAPPER.classList.remove('none');
-	CARD_MIX_BTN.addEventListener('click', mixCards)
+	
+	CARD_MIX_BTN.addEventListener('click', chooseCard)
 }
+
+let newStages = [];
 
 const normalLevel = () => {
-	blueCardsData.forEach(item => allBlueCardsWithLevel.push(item));
-	brownCardsData.forEach(item => allBrownCardsWithLevel.push(item));
-	greenCardsData.forEach(item => allGreenCardsWithLevel.push(item));
+
+	let randomNumber;
+	let blueCount = 0,
+		 greenCount = 0,
+		 brownCount = 0;
+
+	for(let item of blueCardsData){
+		allBlueCardsWithLevel.push(item.id);
+	}
+
+	for(let item of greenCardsData){
+		allGreenCardsWithLevel.push(item.id);
+	}
+
+	for(let item of brownCardsData){
+		allBrownCardsWithLevel.push(item.id);
+	}
+
+	stages.forEach((item, index) => {
+		
+		counts[index][0] = STATE_WRAPPERS[index].children[0].textContent;
+		counts[index][1] = STATE_WRAPPERS[index].children[1].textContent;
+		counts[index][2] = STATE_WRAPPERS[index].children[2].textContent;
+
+		let blueCount = 0,
+		greenCount = 0,
+		brownCount = 0;
+
+		item = new Set();
+
+		while(blueCount < counts[index][0]){
+			randomNumber = getRandomNum(0, allBlueCardsWithLevel.length)
+			item.add(`assets/MythicCards/blue/${allBlueCardsWithLevel[randomNumber]}.png`);
+			blueCount++;
+			// console.log(blueCount);
+		}
+
+		while(greenCount < counts[index][1]){
+			randomNumber = getRandomNum(0, allGreenCardsWithLevel.length)
+			item.add(`assets/MythicCards/green/${allGreenCardsWithLevel[randomNumber]}.png`);
+			greenCount++;
+			// console.log(greenCount);
+		}
+
+		while(brownCount < counts[index][2]){
+			randomNumber = getRandomNum(0, allBrownCardsWithLevel.length)
+			item.add(`assets/MythicCards/brown/${allBrownCardsWithLevel[randomNumber]}.png`);
+			brownCount++;
+			// console.log(newStages);
+		}
+
+		newStages.push(shuffleArray(Array.from(item)));
+	})
+
+	console.log(newStages);
+	console.log(counts);
 }
 
-const mixCards = () => {
+const chooseCard = () => {
+
+	let currentCard;
+
+	console.log(newStages);
+	console.log(counts);
 	
-	currentColorNumber = getRandomNum(0, 3);
+	if(newStages.every(item => item.length === 0)){
+		CHOOSE_CARD.classList.add('none'); 
+	}
+	else{
+		if(newStages[0].length !== 0){
+			currentCard = newStages[0][newStages[0].length - 1];
+			state = 0;
+		}
+		else if(newStages[1].length !== 0){
+			currentCard = newStages[1][newStages[1].length - 1];
+			state = 1;
+		}
+		else if(newStages[2].length !== 0){
+			currentCard = newStages[2][newStages[2].length - 1];
+			state = 2;
+		}
 
-	if(currentColorNumber === 0){
-		if(STATE_WRAPPERS[0].children[0].textContent !== 0)
-		currentCardNumber = getRandomNum(0, blueCardsData.length)
-		CHOOSE_CARD.src = `assets/MythicCards/blue/${blueCardsData[currentCardNumber].id}.png`;
-		STATE_WRAPPERS[0].children[0].textContent = --STATE_WRAPPERS[0].children[0].textContent;
+		console.log(currentCard);
+
+		if(currentCard.includes('blue')){
+			counts[state][0]--;
+			STATE_WRAPPERS[state].children[0].textContent = counts[state][0];
+		}
+		else if(currentCard.includes('green')){
+			counts[state][1]--;
+			STATE_WRAPPERS[state].children[1].textContent = counts[state][1];
+		}
+		else if(currentCard.includes('brown')){
+			counts[state][2]--;
+			STATE_WRAPPERS[state].children[2].textContent = counts[state][2];
+		}
+
+		CHOOSE_CARD.src = currentCard;
+
+		newStages[state].pop();
 	}
-	if(currentColorNumber === 1){
-		currentCardNumber = getRandomNum(0, blueCardsData.length)
-		CHOOSE_CARD.src = `assets/MythicCards/green/${greenCardsData[currentCardNumber].id}.png`;
-		STATE_WRAPPERS[0].children[1].textContent = --STATE_WRAPPERS[0].children[1].textContent;
 	}
-	if(currentColorNumber === 2){
-		currentCardNumber = getRandomNum(0, blueCardsData.length)
-		CHOOSE_CARD.src = `assets/MythicCards/brown/${brownCardsData[currentCardNumber].id}.png`;
-		STATE_WRAPPERS[0].children[2].textContent = --STATE_WRAPPERS[0].children[2].textContent;
-	}	
+
+	// if(counts.every(item => Number(item) === 0)){
+		// 	// 	if(state === 2){
+		// 	// 		CHOOSE_CARD.classList.add('none');
+		// 	// 	}
+		// 	// 	else{
+		// 	// 		mixCards(++state);
+		// 	// 	}
+		// 	// }
+		// 	// else if(currentColorNumber === 0){		
+		// 	// 	if(counts[0] === '0'){
+		// 	// 		mixCards(state);
+		// 	// 	}
+		// 	// 	else{
+		// 	// 		currentCardNumber = getRandomNum(0, blueCardsData.length)
+		// 	// 		CHOOSE_CARD.src = `assets/MythicCards/blue/${blueCardsData[currentCardNumber].id}.png`;
+		// 	// 		STATE_WRAPPERS[state].children[0].textContent = --counts[0];
+		// 	// 	}
+		// 	// }
+		// 	// else if(currentColorNumber === 1){
+		// 	// 	if(counts[1] === '0'){
+		// 	// 		mixCards(state);
+		// 	// 	}
+// }
+
+// const mixCards = (state) => {
+	
+// 	currentColorNumber = getRandomNum(0, 3);
+
+// 	counts[0] = STATE_WRAPPERS[state].children[0].textContent;
+// 	counts[1] = STATE_WRAPPERS[state].children[1].textContent;
+// 	counts[2] = STATE_WRAPPERS[state].children[2].textContent;
+
+// 	if(counts.every(item => Number(item) === 0)){
+// 		if(state === 2){
+// 			CHOOSE_CARD.classList.add('none');
+// 		}
+// 		else{
+// 			mixCards(++state);
+// 		}
+// 	}
+// 	else if(currentColorNumber === 0){		
+// 		if(counts[0] === '0'){
+// 			mixCards(state);
+// 		}
+// 		else{
+// 			currentCardNumber = getRandomNum(0, blueCardsData.length)
+// 			CHOOSE_CARD.src = `assets/MythicCards/blue/${blueCardsData[currentCardNumber].id}.png`;
+// 			STATE_WRAPPERS[state].children[0].textContent = --counts[0];
+// 		}
+// 	}
+// 	else if(currentColorNumber === 1){
+// 		if(counts[1] === '0'){
+// 			mixCards(state);
+// 		}
+// 		else{
+// 			currentCardNumber = getRandomNum(0, greenCardsData.length)
+// 			CHOOSE_CARD.src = `assets/MythicCards/green/${greenCardsData[currentCardNumber].id}.png`;
+// 			STATE_WRAPPERS[state].children[1].textContent = --counts[1];
+// 		}
+// 	}
+// 	else if(currentColorNumber === 2){
+// 		if(counts[2] === '0'){
+// 			mixCards(state);
+// 		}
+// 		else{
+// 			currentCardNumber = getRandomNum(0, brownCardsData.length)
+// 			CHOOSE_CARD.src = `assets/MythicCards/brown/${brownCardsData[currentCardNumber].id}.png`;
+// 			STATE_WRAPPERS[state].children[2].textContent = --counts[2];
+// 		}
+// 	}
+
+// 	console.log(currentColorNumber);
+// 	console.log(currentCardNumber);
+// }
+
+// const cardsInit = (item) => {
+
+// 	console.log(item)
+
+
+// 	counts[0] = STATE_WRAPPERS[state].children[0].textContent;
+// 	counts[1] = STATE_WRAPPERS[state].children[1].textContent;
+// 	counts[2] = STATE_WRAPPERS[state].children[2].textContent;
+
+// 	for(let i = 0; i < counts[0]; i++){
+// 		item.push(`assets/MythicCards/blue/${blueCardsData[getRandomNum(0, blueCardsData.length)].id}.png`)
+// 	}
+
+// 	for(let i = 0; i < counts[1]; i++){
+// 		item.push(`assets/MythicCards/green/${greenCardsData[getRandomNum(0, greenCardsData.length)].id}.png`)
+// 	}
+
+// 	for(let i = 0; i < counts[2]; i++){
+// 		item.push(`assets/MythicCards/brown/${brownCardsData[getRandomNum(0, brownCardsData.length)].id}.png`)
+// 	}
+
+// 	console.log(firstState);
+// }
+
+// const mixCards = (state) => {
+	
+// 	currentColorNumber = getRandomNum(0, 3);
+
+// 	counts[0] = STATE_WRAPPERS[state].children[0].textContent;
+// 	counts[1] = STATE_WRAPPERS[state].children[1].textContent;
+// 	counts[2] = STATE_WRAPPERS[state].children[2].textContent;
+
+// 	for(let i = 0; i < counts[0]; i++){
+// 		firstState.push(`assets/MythicCards/blue/${blueCardsData[getRandomNum(0, blueCardsData.length)].id}.png`)
+// 	}
+
+// 	for(let i = 0; i < counts[1]; i++){
+// 		firstState.push(`assets/MythicCards/green/${greenCardsData[getRandomNum(0, greenCardsData.length)].id}.png`)
+// 	}
+
+// 	for(let i = 0; i < counts[2]; i++){
+// 		firstState.push(`assets/MythicCards/brown/${brownCardsData[getRandomNum(0, brownCardsData.length)].id}.png`)
+// 	}
 
 	
-			
-			
-	// console.log(blueCardsData[2].cardFace);
-}
 
+// 	// if(counts.every(item => Number(item) === 0)){
+// 	// 	if(state === 2){
+// 	// 		CHOOSE_CARD.classList.add('none');
+// 	// 	}
+// 	// 	else{
+// 	// 		mixCards(++state);
+// 	// 	}
+// 	// }
+// 	// else if(currentColorNumber === 0){		
+// 	// 	if(counts[0] === '0'){
+// 	// 		mixCards(state);
+// 	// 	}
+// 	// 	else{
+// 	// 		currentCardNumber = getRandomNum(0, blueCardsData.length)
+// 	// 		CHOOSE_CARD.src = `assets/MythicCards/blue/${blueCardsData[currentCardNumber].id}.png`;
+// 	// 		STATE_WRAPPERS[state].children[0].textContent = --counts[0];
+// 	// 	}
+// 	// }
+// 	// else if(currentColorNumber === 1){
+// 	// 	if(counts[1] === '0'){
+// 	// 		mixCards(state);
+// 	// 	}
+// 	// 	else{
+// 	// 		currentCardNumber = getRandomNum(0, greenCardsData.length)
+// 	// 		CHOOSE_CARD.src = `assets/MythicCards/green/${greenCardsData[currentCardNumber].id}.png`;
+// 	// 		STATE_WRAPPERS[state].children[1].textContent = --counts[1];
+// 	// 	}
+// 	// }
+// 	// else if(currentColorNumber === 2){
+// 	// 	if(counts[2] === '0'){
+// 	// 		mixCards(state);
+// 	// 	}
+// 	// 	else{
+// 	// 		currentCardNumber = getRandomNum(0, brownCardsData.length)
+// 	// 		CHOOSE_CARD.src = `assets/MythicCards/brown/${brownCardsData[currentCardNumber].id}.png`;
+// 	// 		STATE_WRAPPERS[state].children[2].textContent = --counts[2];
+// 	// 	}
+// 	// }
 
-
+// 	// console.log(currentColorNumber);
+// 	// console.log(currentCardNumber);
+// }
 
 const getRandomNum = (min, max) => {
 	return Math.trunc(Math.random() * (max - min) + min);
+}
+
+const shuffleArray = (array) => {
+	return array.map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
 }
 
 ANCIENTS.forEach(item => item.addEventListener('click', e => chooseAncientCard(e)));
