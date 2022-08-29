@@ -29,7 +29,7 @@ let ancientChoosenCard,
 	allBrownCardsWithLevel = [],
 	allBlueCardsWithLevel = [];
 
-
+	let newStages = [];
 
 	let currentColorNumber,
 	currentCardNumber;
@@ -44,6 +44,8 @@ let ancientChoosenCard,
 	let stages = [[], [], []]; 
 
 const chooseAncientCard = (e) => {
+	newStages = []
+
 	const ancient = e.target;
 	ANCIENTS_IMG.forEach(item => item.classList.remove('ancient-active'));
 	ancient.classList.add('ancient-active');
@@ -81,6 +83,8 @@ const showCardsCount = () => {
 }
 
 const chooseLevel = (e) => {
+	newStages = []
+	
 	const level = e.target;
 	LEVELS.forEach(item =>item.classList.remove('level-active'));
 	level.classList.add('level-active');
@@ -97,7 +101,7 @@ const chooseLevel = (e) => {
 	CARD_MIX_BTN.addEventListener('click', chooseCard)
 }
 
-let newStages = [];
+
 
 const normalLevel = () => {
 
