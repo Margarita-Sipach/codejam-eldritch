@@ -35,7 +35,8 @@ let stages = [[], [], []];
 
 const chooseAncientCard = (e) => {
 
-	newStages = []
+	newStages = [];
+	counts = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
 	const ancient = e.target;
 	ANCIENTS_IMG.forEach(item => item.classList.remove('ancient-active'));
@@ -44,6 +45,7 @@ const chooseAncientCard = (e) => {
 	ancientsData.forEach(item => {
 		if(item.id === ancient.parentNode.id){
 			ancientChoosenCard = item;
+			// console.log(item)
 		}
 	});
 
@@ -56,18 +58,19 @@ const showCardsCount = () => {
 	for (let key in ancientChoosenCard){
 		if(key === 'firstStage'){
 			STATE_WRAPPERS[0].children[0].textContent = ancientChoosenCard.firstStage.greenCards;
-			STATE_WRAPPERS[0].children[1].textContent = ancientChoosenCard.firstStage.brownCards;
-			STATE_WRAPPERS[0].children[2].textContent = ancientChoosenCard.firstStage.blueCards;
+			STATE_WRAPPERS[0].children[1].textContent = ancientChoosenCard.firstStage.blueCards;
+			STATE_WRAPPERS[0].children[2].textContent = ancientChoosenCard.firstStage.brownCards;
+			
 		}
 		if(key === 'secondStage'){
 			STATE_WRAPPERS[1].children[0].textContent = ancientChoosenCard.secondStage.greenCards;
-			STATE_WRAPPERS[1].children[1].textContent = ancientChoosenCard.secondStage.brownCards;
-			STATE_WRAPPERS[1].children[2].textContent = ancientChoosenCard.secondStage.blueCards;
+			STATE_WRAPPERS[1].children[1].textContent = ancientChoosenCard.secondStage.blueCards;
+			STATE_WRAPPERS[1].children[2].textContent = ancientChoosenCard.secondStage.brownCards;
 		}
 		if(key === 'thirdStage'){
 			STATE_WRAPPERS[2].children[0].textContent = ancientChoosenCard.thirdStage.greenCards;
-			STATE_WRAPPERS[2].children[1].textContent = ancientChoosenCard.thirdStage.brownCards;
-			STATE_WRAPPERS[2].children[2].textContent = ancientChoosenCard.thirdStage.blueCards;
+			STATE_WRAPPERS[2].children[1].textContent = ancientChoosenCard.thirdStage.blueCards;
+			STATE_WRAPPERS[2].children[2].textContent = ancientChoosenCard.thirdStage.brownCards;
 		}
 	}
 }
@@ -118,8 +121,8 @@ const veryEasyHardLevel = (levelName) => {
 	normalCards();
 	fillCounts();
 
-	let blueCount = 0,
-		 greenCount = 0,
+	let greenCount = 0, 
+		blueCount = 0,	 
 		 brownCount = 0;
 
 	for(let item of blueCardsData){
@@ -140,8 +143,11 @@ const veryEasyHardLevel = (levelName) => {
 		}
 	}
 
-	blueCount = +counts[0][0] + +counts[1][0] + +counts[2][0];
-	greenCount = +counts[0][1] + +counts[1][1] + +counts[2][1];
+	// console.log(allBrownNormalCards);
+	// console.log(allBrownCardsWithLevel);
+
+	greenCount = +counts[0][0] + +counts[1][0] + +counts[2][0];
+	blueCount = +counts[0][1] + +counts[1][1] + +counts[2][1];
 	brownCount = +counts[0][2] + +counts[1][2] + +counts[2][2];
 
 	while(allBlueCardsWithLevel.length < blueCount){
@@ -149,17 +155,18 @@ const veryEasyHardLevel = (levelName) => {
 			allBlueNormalCards.pop();
 	}
 
-	console.log(allBlueCardsWithLevel);
-
 	while(allGreenCardsWithLevel.length < greenCount){
 		allGreenCardsWithLevel.push(allGreenNormalCards[allGreenNormalCards.length - 1]);
 		allGreenNormalCards.pop();
 	}
 
 	while(allBrownCardsWithLevel.length < brownCount){
-		allBrownCardsWithLevel.push(allGreenNormalCards[allBrownNormalCards.length - 1]);
+		allBrownCardsWithLevel.push(allBrownNormalCards[allBrownNormalCards.length - 1]);
 		allBrownNormalCards.pop();
+		// console.log(allBrownCardsWithLevel);
 	}
+
+	// console.log(allBrownCardsWithLevel);
 
 	fillAllCardsWithLevels();
 }
@@ -211,16 +218,16 @@ const fillAllCardsWithLevels = () => {
 		greenCount = 0;
 		brownCount = 0;
 
-		while(blueCount < counts[index][0]){
-				item.push(`assets/MythicCards/blue/${allBlueCardsWithLevel[allBlueCardsWithLevel.length - 1]}.png`);
-				allBlueCardsWithLevel.pop();
-				blueCount++;
-		}
-
-		while(greenCount < counts[index][1]){
+		while(greenCount < counts[index][0]){
 			item.push(`assets/MythicCards/green/${allGreenCardsWithLevel[allGreenCardsWithLevel.length - 1]}.png`);
 				allGreenCardsWithLevel.pop();
 				greenCount++;
+		}
+
+		while(blueCount < counts[index][1]){
+				item.push(`assets/MythicCards/blue/${allBlueCardsWithLevel[allBlueCardsWithLevel.length - 1]}.png`);
+				allBlueCardsWithLevel.pop();
+				blueCount++;
 		}
 
 		while(brownCount < counts[index][2]){
@@ -279,11 +286,12 @@ const chooseCard = () => {
 			state = 2;
 		}
 
-		if(currentCard.includes('blue')){
+		
+		if(currentCard.includes('green')){
 			counts[state][0]--;
 			STATE_WRAPPERS[state].children[0].textContent = counts[state][0];
 		}
-		else if(currentCard.includes('green')){
+		else if(currentCard.includes('blue')){
 			counts[state][1]--;
 			STATE_WRAPPERS[state].children[1].textContent = counts[state][1];
 		}
