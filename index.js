@@ -316,4 +316,4 @@ const shuffleArray = (array) => {
 }
 
 ANCIENTS.forEach(item => item.addEventListener('click', e => chooseAncientCard(e)));
-console.log('Все должно работать корректно при перезагрузке, извините за неудобства')
+console.log('Все должно работать корректно при перезагрузке, извините за неудобства/')
