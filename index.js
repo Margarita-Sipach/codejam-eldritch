@@ -16,10 +16,6 @@ const ANCIENTS = document.querySelectorAll('.ancient'),
 		CHOOSE_CARD = document.querySelector('.cards__choose-card-img'),
 		CARD_MIX_BTN = document.querySelector('.cards__mix');
 
-
-		
-const COLORS = ['blue', 'green', 'brown'];
-
 let counts = [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
 		state = 0;
 
@@ -29,28 +25,15 @@ let ancientChoosenCard,
 	allBrownCardsWithLevel = [],
 	allBlueCardsWithLevel = [];
 
-	let allBlueNormalCards = [],
-		allGreenNormalCards = [],
-		allBrownNormalCards = [];
+let allBlueNormalCards = [],
+	allGreenNormalCards = [],
+	allBrownNormalCards = [];
 
-	let newStages = [];
+let newStages = [];
 
-	let currentColorNumber,
-	currentCardNumber;
-
-	let 	greenCards,
-			brownCards,
-			blueCards;
-			// greenCount = 0,
-			// brownCount = 0,
-			// blueCount = 0;
-
-	let stages = [[], [], []]; 
+let stages = [[], [], []]; 
 
 const chooseAncientCard = (e) => {
-	// location.reload();
-
-	// LEVELS.forEach(item =>item.classList.remove('level-active'));
 
 	newStages = []
 
@@ -66,7 +49,6 @@ const chooseAncientCard = (e) => {
 
 	showCardsCount();
 	LEVELS.forEach(item => item.addEventListener('click', e => chooseLevel(e)));
-	
 }
 
 const showCardsCount = () => {
@@ -91,7 +73,19 @@ const showCardsCount = () => {
 }
 
 const chooseLevel = (e) => {
-	newStages = []
+	allBlueNormalCards = [];
+	allGreenNormalCards = [];
+	allBrownNormalCards = [];
+	newStages = [];
+	ancientChoosenCard = [];
+	allCardsWithLevel = [];
+	allGreenCardsWithLevel = [];
+	allBrownCardsWithLevel = [];
+	allBlueCardsWithLevel = [];
+	counts = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+	state = 0;
+	newStages = [];
+	stages = [[], [], []]; 
 
 	const level = e.target;
 	LEVELS.forEach(item =>item.classList.remove('level-active'));
@@ -101,18 +95,18 @@ const chooseLevel = (e) => {
 	if(level.id === 'very_easy'){
 		veryEasyHardLevel('easy');
 	}
-		if(level.id === 'easy'){
-			easyNormalHardLevel('hard');
-		}
-		if(level.id === 'normal'){
-			easyNormalHardLevel('');
-		}
-		if(level.id === 'hard'){
-			easyNormalHardLevel('easy');
-		}
-		if(level.id === 'very_hard'){
-			veryEasyHardLevel('hard');
-		}
+	if(level.id === 'easy'){
+		easyNormalHardLevel('hard');
+	}
+	if(level.id === 'normal'){
+		easyNormalHardLevel('');
+	}
+	if(level.id === 'hard'){
+		easyNormalHardLevel('easy');
+	}
+	if(level.id === 'very_hard'){
+		veryEasyHardLevel('hard');
+	}
 
 	CARDS_WRAPPER.classList.remove('none');
 	CARD_MIX_BTN.addEventListener('click', chooseCard)
@@ -122,10 +116,8 @@ const chooseLevel = (e) => {
 const veryEasyHardLevel = (levelName) => {
 
 	normalCards();
-
 	fillCounts();
 
-	let randomNumber;
 	let blueCount = 0,
 		 greenCount = 0,
 		 brownCount = 0;
@@ -170,15 +162,12 @@ const veryEasyHardLevel = (levelName) => {
 	}
 
 	fillAllCardsWithLevels();
-
 }
 
 
 const easyNormalHardLevel = (levelName) => {
 
 	fillCounts();
-
-		
 
 	for(let item of blueCardsData){
 		if(item.difficulty !== levelName)
@@ -200,7 +189,6 @@ const easyNormalHardLevel = (levelName) => {
 
 const fillCounts = () => {
 	stages.forEach((item, index) => {
-		
 		counts[index][0] = STATE_WRAPPERS[index].children[0].textContent;
 		counts[index][1] = STATE_WRAPPERS[index].children[1].textContent;
 		counts[index][2] = STATE_WRAPPERS[index].children[2].textContent;
@@ -271,7 +259,6 @@ const chooseCard = () => {
 	newStages[0] = shuffleArray(newStages[0]);
 	newStages[1] = shuffleArray(newStages[1]);
 	newStages[2] = shuffleArray(newStages[2]);
-	
 
 	let currentCard;
 	
